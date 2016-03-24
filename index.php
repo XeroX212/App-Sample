@@ -46,10 +46,9 @@ $(document).ready(function() {
 				//Edit form to be displayed with new marker
 				var EditForm = '<p><div class="marker-edit">'+
 				'<form action="ajax-save.php" method="POST" name="SaveMarker" id="SaveMarker">'+
-				'<label for="pName"><span>Place Name :</span><input type="text" name="pName" class="save-name" placeholder="Enter Title" maxlength="40" /></label>'+
+				'<label for="pName"><span>Name of the Assessor:</span><input type="text" name="pName" class="save-name" placeholder="Enter Title" maxlength="40" /></label>'+
+                '<label for="pDate"><span>Date :</span><input class="save-date" name="pDate" type="date" value="2011-01-13"/></label>'+
 				'<label for="pDesc"><span>Description :</span><textarea name="pDesc" class="save-desc" placeholder="Enter Address" maxlength="150"></textarea></label>'+
-				'<label for="pType"><span>Type :</span> <select name="pType" class="save-type"><option value="restaurant">Rastaurant</option><option value="bar">Bar</option>'+
-				'<option value="house">House</option></select></label>'+
 				'</form>'+
 				'</div></p><button name="save-marker" class="save-marker">Save Marker Details</button>';
 
@@ -102,14 +101,14 @@ $(document).ready(function() {
 			google.maps.event.addDomListener(saveBtn, "click", function(event) {
 				var mReplace = contentString.find('span.info-content'); //html to be replaced after success
 				var mName = contentString.find('input.save-name')[0].value; //name input field value
+                var mDate = contentString.find('input.save-date')[0].value; //date input field value
 				var mDesc  = contentString.find('textarea.save-desc')[0].value; //description input field value
-				var mType = contentString.find('select.save-type')[0].value; //type of marker
 				
 				if(mName =='' || mDesc =='')
 				{
 					alert("Please enter Name and Description!");
 				}else{
-					save_marker(marker, mName, mDesc, mType, mReplace); //call save marker function
+					save_marker(marker, mName, mDate, mDesc, mReplace); //call save marker function
 				}
 			});
 		}
@@ -157,11 +156,11 @@ $(document).ready(function() {
 	}
 	
 	//############### Save Marker Function ##############
-	function save_marker(Marker, mName, mAddress, mType, replaceWin)
+	function save_marker(Marker, mName, mDate, mAddress, replaceWin)
 	{
 		//Save new marker using jQuery Ajax
 		var mLatLang = Marker.getPosition().toUrlValue(); //get marker position
-		var myData = {name : mName, address : mAddress, latlang : mLatLang, type : mType }; //post variables
+		var myData = {name : mName, date : mDate, address : mAddress, latlang : mLatLang }; //post variables
 		console.log(replaceWin);		
 		$.ajax({
 		  type: "POST",

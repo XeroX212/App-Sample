@@ -43,10 +43,10 @@ if($_POST) //run only if there's a post data
 	}
 	
 	$mName 		= filter_var($_POST["name"], FILTER_SANITIZE_STRING);
+    $mDate      = filter_var($_POST["date"], FILTER_SANITIZE_STRING);
 	$mAddress 	= filter_var($_POST["address"], FILTER_SANITIZE_STRING);
-	$mType		= filter_var($_POST["type"], FILTER_SANITIZE_STRING);
 	
-	$results = $mysqli->query("INSERT INTO markers (name, address, lat, lng, type) VALUES ('$mName','$mAddress',$mLat, $mLng, '$mType')");
+	$results = $mysqli->query("INSERT INTO markers (name, date, address, lat, lng, type) VALUES ('$mName','$mDate','$mAddress',$mLat, $mLng)");
 	if (!$results) {  
 		  header('HTTP/1.1 500 Error: Could not create marker!'); 
 		  exit();
@@ -80,10 +80,10 @@ while($obj = $results->fetch_object())
   $node = $dom->createElement("marker");  
   $newnode = $parnode->appendChild($node);   
   $newnode->setAttribute("name",$obj->name);
+  $newnode->setAttribute("date",$obj->date);
   $newnode->setAttribute("address", $obj->address);  
   $newnode->setAttribute("lat", $obj->lat);  
-  $newnode->setAttribute("lng", $obj->lng);  
-  $newnode->setAttribute("type", $obj->type);	
+  $newnode->setAttribute("lng", $obj->lng);  	
 }
 
 echo $dom->saveXML();
