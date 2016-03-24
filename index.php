@@ -37,7 +37,7 @@ $(document).ready(function() {
 					  var address 	= '<p>'+ $(this).attr('address') +'</p>';
 					  var type 		= $(this).attr('type');
 					  var point 	= new google.maps.LatLng(parseFloat($(this).attr('lat')),parseFloat($(this).attr('lng')));
-					  create_marker(point, name, address, false, false, false, "http://----PATH-TO-YOUR-WEBSITE-ICON-------/icons/pin_blue.png");
+					  create_marker(point, name, address, false, false, false, "icons/pin_blue.png");
 				});
 			});	
 			
@@ -47,7 +47,8 @@ $(document).ready(function() {
 				var EditForm = '<p><div class="marker-edit">'+
 				'<form action="ajax-save.php" method="POST" name="SaveMarker" id="SaveMarker">'+
 				'<label for="pName"><span>Name of the Assessor:</span><input type="text" name="pName" class="save-name" placeholder="Enter Title" maxlength="40" /></label>'+
-                '<label for="pDate"><span>Date :</span><input class="save-date" name="pDate" type="date" value="2011-01-13"/></label>'+
+                '<label for="pDate"><span>Date :</span><input class="save-date" name="pDate" type="date" value="201-01-13"/></label>'+
+                '<label for="pCity"><span>City/ Town/ District:</span><input type="text" name="pCity" class="save-city" placeholder="Enter City" maxlength="40" /></label>'+
 				'<label for="pDesc"><span>Description :</span><textarea name="pDesc" class="save-desc" placeholder="Enter Address" maxlength="150"></textarea></label>'+
 				'</form>'+
 				'</div></p><button name="save-marker" class="save-marker">Save Marker Details</button>';
@@ -102,13 +103,14 @@ $(document).ready(function() {
 				var mReplace = contentString.find('span.info-content'); //html to be replaced after success
 				var mName = contentString.find('input.save-name')[0].value; //name input field value
                 var mDate = contentString.find('input.save-date')[0].value; //date input field value
+                var mCity = contentString.find('input.save-city')[0].value; //City input field value
 				var mDesc  = contentString.find('textarea.save-desc')[0].value; //description input field value
 				
 				if(mName =='' || mDesc =='')
 				{
 					alert("Please enter Name and Description!");
 				}else{
-					save_marker(marker, mName, mDate, mDesc, mReplace); //call save marker function
+					save_marker(marker, mName, mDate, mCity, mDesc, mReplace); //call save marker function
 				}
 			});
 		}
@@ -156,11 +158,11 @@ $(document).ready(function() {
 	}
 	
 	//############### Save Marker Function ##############
-	function save_marker(Marker, mName, mDate, mAddress, replaceWin)
+	function save_marker(Marker, mName, mDate, mCity, mAddress, replaceWin)
 	{
 		//Save new marker using jQuery Ajax
 		var mLatLang = Marker.getPosition().toUrlValue(); //get marker position
-		var myData = {name : mName, date : mDate, address : mAddress, latlang : mLatLang }; //post variables
+		var myData = {name : mName, date : mDate, city : mCity, address : mAddress, latlang : mLatLang }; //post variables
 		console.log(replaceWin);		
 		$.ajax({
 		  type: "POST",
